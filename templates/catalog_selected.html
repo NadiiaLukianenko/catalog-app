@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog App</title>
+</head>
+<body>
+<style>
+    h1 {
+        background-color: #001933;
+        color: white;
+    }
+    h3 {
+        color: #001933;
+    }
+    #internal {
+    }
+
+    #links {
+        color: red;
+    }
+</style>
+
+<!--
+    <a class="catalog" href="#">Catalog App</a>
+-->
+<div class="container" >
+    <div class="row header">
+        <h1>Catalog App</h1>
+    </div>
+    <div class="container" id="internal">
+        <div class="row">
+            <div class="col-sm-3">
+                <h3>Categories</h3>
+                <div id="links">
+                {% for i in categories %}
+                    <a href="{{url_for('catalogSelected',category_name=i.name)}}">{{ i.name }}</a><br>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <a href="{{url_for('newItem')}}">Add Item</a>
+                <h3>Items</h3>
+                <div id="links">
+                {% for i in items %}
+                    <a href="{{url_for('item',category_name=category_name,item_name=i.name)}}">
+                        {{ i.name }}</a><br>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
