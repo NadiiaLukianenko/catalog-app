@@ -16,6 +16,21 @@ class Category(Base):
     name = Column(String(80), nullable=False)
     description = Column(String(250))
     items = relationship("Item", backref="item")
+    @property
+    def serialize(self):
+        """ Return in serialized format
+        """
+        return {
+            'id' : self.id,
+            'name' : self.name,
+            'description' : self.description,
+            'Items' : self.serialize_one2many
+        }
+    @property
+    def serialize_one2many(self):
+        """ Return in serialized format
+        """
+        return [item.serialize for item in self.items]
 
 class Item(Base):
     __tablename__ = 'item'
@@ -26,7 +41,6 @@ class Item(Base):
     picture = Column(String)
     category = relationship(Category)
     category_id = Column(Integer, ForeignKey('category.id'))
-
     @property
     def serialize(self):
        """Return in serialized format

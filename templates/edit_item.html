@@ -24,30 +24,30 @@
         <h1>Catalog App</h1>
     </div>
     <h2>Edit Item</h2>
-    <form role="form">
+    <form role="form" method="POST">
         <div class="form-group">
             <label>Title</label>
-            <input type="text" class="form-control" id="item" value="{{item.name}}">
+            <input type="text" class="form-control" name="item" value="{{item.name}}">
         </div>
         <div class="form-group">
             <label>Description</label>
-            <input type="text" class="form-control" id="description" value="{{item.description}}">
+            <input type="text" class="form-control" name="description" value="{{item.description}}">
         </div>
         <div class="list">
             <label>Category</label>
-            <select class="form-control" id="category">
+            <select class="form-control" name="category">
                 {% for category in categories %}
-                    {% if category.id == item.category_id %}
-                        <option value="{{category.id}}" selected>{{category.name}}</option>
+                    {% if category.name == category_name %}
+                        <option value="{{item.category_id}}" selected>{{category_name}}</option>
                     {% else %}
                         <option value="{{category.id}}">{{category.name}}</option>
                     {% endif %}
-                {% endfor %}
+               {% endfor %}
             </select>
             <br>
         </div>
         <button type="submit" value="editItem" class="btn btn-default">Submit</button>
-        <a href = "{{url_for('catalog')}}">Cancel</a>
+        <a href="{{url_for('catalog')}}">Cancel</a>
     </form>
 </div>
 

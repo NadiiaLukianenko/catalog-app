@@ -15,9 +15,8 @@ session = DBSession()
 def login():
     pass
 
-
-@app.route('/catalog/<category_name>/JSON')
-def categoryJSON(category_name):
+@app.route('/catalog/<category_name>.JSON')
+def itemsJSON(category_name):
     category = session.query(Category).filter_by(name=category_name).one()
     items = session.query(Item).filter_by(
         category_id=category.id).all()
@@ -25,13 +24,10 @@ def categoryJSON(category_name):
 
 
 # ADD JSON ENDPOINT HERE
-@app.route('/catalog/<category_name>/JSON')
-def itemJSON(category_name, item_name):
-    category = session.query(Category).\
-        filter_by(name=category_name).one()
-    item = session.query(Item).filter_by(name=item_name,
-        category_id=category.id).one()
-    return jsonify(Item=item.serialize)
+@app.route('/catalog.JSON')
+def catalogJSON():
+    categories = session.query(Category).all()
+    return jsonify(Category=[i.serialize for i in categories])
 
 
 @app.route('/')
@@ -80,24 +76,27 @@ def newItem():
 @app.route('/catalog/<category_name>/<item_name>/Edit',
            methods=['GET', 'POST'])
 def editItem(category_name, item_name):
+    categories = session.query(Category).all()
     category = session.query(Category).filter_by(name=category_name).one()
+    category_id = category.id
     editedItem = session.query(Item).filter_by(name=item_name,
-                category_id=category.id).one()
+                category_id=category_id).one()
+
     if request.method == 'POST':
-        if request.form['name']:
-            editedItem.name = request.form['name']
+        if request.form['item']:
+            editedItem.name = request.form['item']
         if request.form['description']:
             editedItem.description = request.form['description']
         if request.form['category']:
-            editedItem.category = request.form['category']
+            editedItem.category_id = request.form['category']
         session.add(editedItem)
         session.commit()
         return redirect(url_for('catalogSelected', category_name=category_name))
     else:
-        return render_template('edit_item.html', category_name=category_name,
-                               item_name=item_name, item=editedItem,
-                               category=category)
-
+        return render_template('edit_item.html',
+                category_name=category.name,
+                item=editedItem,
+                categories=categories)
 
 @app.route('/catalog/<category_name>/<item_name>/Delete',
            methods=['GET', 'POST'])
