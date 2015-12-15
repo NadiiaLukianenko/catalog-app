@@ -24,15 +24,13 @@
         <h1>Catalog App</h1>
     </div>
     <div class="row">
-        {{item.name}}<br>
-        {{item.description}}<br>
+        <h3>{{item.name}}</h3><br>
+        {{item.description}}<br><br>
 
-<!-- auth stuff -->
+    {% if 'username' in login_session %}
     <a href="{{url_for('editItem',category_name=category.name,item_name=item.name)}}">Edit</a> |
     <a href="{{url_for('deleteItem',category_name=category.name,item_name=item.name)}}">Delete</a>
-
-
-<!-- auth stuff -->
+    {% endif %}
 
     </div>
 </div>

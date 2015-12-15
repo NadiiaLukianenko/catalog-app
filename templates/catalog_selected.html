@@ -70,8 +70,10 @@
             </div>
             <div class="col-sm-9 left top">
                 <br>
+                {% if 'username' in login_session %}
                 <a href="{{url_for('newItem')}}">Add Item</a>
-                <h3>Items</h3>
+                {% endif %}
+                <h3>{{category_name}} Items</h3>
                 <div id="links">
                 {% for i in items %}
                     <a href="{{url_for('item',category_name=category_name,item_name=i.name)}}">
