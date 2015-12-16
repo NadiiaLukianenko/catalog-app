@@ -54,9 +54,16 @@
     <a class="catalog" href="#">Catalog App</a>
 -->
 <div class="container" >
-    <div class="row header">
+    <div class="row header col-sm-3 left">
         <h1>Catalog App</h1>
     </div>
+    <div class="col-sm-3 right">
+            {% if 'username' in login_session %}
+             <a class="btn btn-default" href="{{url_for('gdisconnect')}}">Logout</a>
+            {% else %}
+            <a class="btn btn-default" href="{{url_for('showLogin')}}">Login</a>
+            {% endif %}
+        </div>
     <div class="container border" id="internal">
         <div class="row">
             <div class="col-sm-3 right bottom">

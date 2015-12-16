@@ -19,7 +19,6 @@
         color: #001933;
     }
     #internal {
-
     }
     #links {
         color: red;
@@ -64,13 +63,13 @@
         <div class="col-sm-3">
         <h1>Catalog App</h1>
         </div>
-        <div class="col-sm-3 ">
+    </div>
+    <div class="col-sm-3 ">
             {% if 'username' in login_session %}
              <a class="btn btn-default" href="{{url_for('gdisconnect')}}">Logout</a>
             {% else %}
             <a class="btn btn-default" href="{{url_for('showLogin')}}">Login</a>
             {% endif %}
-        </div>
     </div>
     <div class="container border" id="internal">
         <div class="row">
