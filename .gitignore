@@ -48,4 +48,6 @@ crashlytics-build.properties
 fabric.properties
 
 # 
-client_secret.json
+#client_secrets.json
+catalog.db
+*.pyc
