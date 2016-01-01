@@ -9,9 +9,11 @@ To work with DB and application:
 or
 - Fork the repository:
     https://github.com/NadiiaLukianenko/catalog-app.git
-- To create DB and populate data - run:
+To create DB and populate data - run:
     - python database_setup.py
     - python db_populate.py
+To run application:
+    - python catalog_functions.py
 ====================================
 What are included:
 catalog/
