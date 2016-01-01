@@ -3,100 +3,42 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Catalog App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<style>
-    h1 {
-        background-color: #001933;
-        color: white;
-    }
-    h3 {
-        color: #001933;
-    }
-    #internal {
-    }
-    #links {
-        color: red;
-    }
-   .border {
-    outline: 1px solid #ccc;
-    margin: -1px solid #ccc;
-    height: 100%;
-    }
-    .right {
-    border-right: 1px solid #ccc;
-    margin: -1px solid #ccc;
-    outline: 1px solid #ccc;
-    height: 100%;
-    }
-    .left {
-    border-left: 1px solid #ccc;
-    margin: -1px solid #ccc;
-    outline: 1px solid #ccc;
-    height: 100%;
-    }
-    .top {
-    border-top: 1px solid #ccc;
-    margin: -1px solid #ccc;
-    outline: 1px solid #ccc;
-    height: 100%;
-    }
-    .bottom {
-    border-bottom: 1px solid #ccc;
-    margin: -1px solid #ccc;
-    outline: 1px solid #ccc;
-    height: 100%;
-    }
-
-</style>
-
-<!--
-    <a class="catalog" href="#">Catalog App</a>
--->
-<div class="container" >
-    <div class="row header">
-        <div class="col-sm-3">
-        <h1>Catalog App</h1>
-        </div>
-    </div>
-    <div class="col-sm-3 ">
-            {% if 'username' in login_session %}
-             <a class="btn btn-default" href="{{url_for('gdisconnect')}}">Logout</a>
-            {% else %}
-            <a class="btn btn-default" href="{{url_for('showLogin')}}">Login</a>
-            {% endif %}
-    </div>
-    <div class="container border" id="internal">
+<div class="wrapper">
+    {% include 'header.html' %}
+    <div class="container">
         <div class="row">
             <div class="col-sm-3 right bottom">
                 <h3>Categories</h3>
-                <div id="links">
+                <div>
                 {% for i in categories %}
-                    <a href="{{url_for('catalogSelected',category_name=i.name)}}">{{ i.name }}</a><br>
+                    <a href="{{url_for('catalogSelected',category_name=i.name)}}" id="category-link">{{ i.name }}</a><br>
                 {% endfor %}
                 <br>
                 </div>
             </div>
             <div class="col-sm-9 left top">
                 {% if 'username' in login_session %}
-                    <a href="{{url_for('newItem')}}">Add Item</a>
+                    <a href="{{url_for('newItem')}}" id="links">Add Item</a>
                 {% endif %}
                 <h3>Latest Items</h3>
                 <div id="links">
                 {% for i in items %}
-                    <a href="{{url_for('item',category_name=dict[i.category_id],item_name=i.name)}}">
-                        {{ i.name }} ({{dict[i.category_id]}})</a><br>
+                    <a href="{{url_for('item',category_name=dict[i.category_id],item_name=i.name)}}" id="item-link">
+                        {{ i.name }} (<span id="category">{{dict[i.category_id]}}</span>)</a><br>
                 {% endfor %}
                 </div>
             </div>
         </div>
     </div>
+    <div class="push"></div>
 </div>
-
+{% include 'footer.html' %}
 </body>
 </html>
