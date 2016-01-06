@@ -18,7 +18,8 @@ from flask import make_response
 import requests
 import random
 import string
-
+from xml.etree.ElementTree import Element, SubElement, tostring, dump
+from flask.ext.responses import xml_response
 
 CLIENT_ID = json.loads(open('client_secrets.json',
                             'r').read())['web']['client_id']
@@ -30,6 +31,38 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+
+@app.route('/catalog.XML')
+def returnXml():
+    categories = session.query(Category).all()
+    root = Element('catalog')
+    categories_xml = SubElement(root, 'categories')
+    for i in categories:
+        category_xml = SubElement(categories_xml, 'category',
+                                  {'id': str(i.id),
+                                   'name': i.name,
+                                   'description': i.description,
+                                   }
+                                  )
+        items = session.query(Item).filter_by(category_id=i.id).all()
+        items_xml = SubElement(category_xml, 'items')
+        for j in items:
+            item_xml = SubElement(items_xml, 'item',
+                            {
+                                'id': str(j.id),
+                                'name': j.name,
+                                'description': j.description,
+                                'creationDateTime': str(j.creationDateTime)
+                            })
+    return xml_response(tostring(root))
+
+
+def login_required(func):
+    def func_wrapper():
+        if 'username' not in login_session:
+            return redirect('/login')
+    return func_wrapper
 
 
 @app.route('/login')
@@ -170,6 +203,9 @@ def catalogJSON():
 
 @app.route('/')
 def catalog():
+    """
+    catalog returns all categories and lists items ascending by datetime
+    """
     categories = session.query(Category).all()
     items = session.query(Item).order_by(Item.creationDateTime.asc()).\
         limit(10)
@@ -183,6 +219,11 @@ def catalog():
 
 @app.route('/catalog/<category_name>/Items')
 def catalogSelected(category_name):
+    """
+    catalogSelected fetches and returns items from selected category
+    Args:
+        category_name: name of category
+    """
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(name=category_name).one()
     items = session.query(Item).filter_by(category_id=category.id).all()
@@ -194,17 +235,24 @@ def catalogSelected(category_name):
 
 @app.route('/catalog/<category_name>/<item_name>')
 def item(category_name, item_name):
+    """
+    item fetches and returns item data
+    Args:
+        category_name: name of category
+        item_name: name of item in the category
+    """
     category = session.query(Category).filter_by(name=category_name).one()
     item = session.query(Item).filter_by(name=item_name,
                                          category_id=category.id).one()
     return render_template('item.html', category=category, item=item,
                            login_session=login_session)
 
-
+@login_required
 @app.route('/catalog/New', methods=['GET', 'POST'])
 def newItem():
-    if 'username' not in login_session:
-        return redirect('/login')
+    """
+    newItem adds new item if user is logged in
+    """
     if request.method == 'POST':
         newItem = Item(name=request.form['item'], description=request.form[
                     'description'], category_id=request.form['category'])
@@ -220,11 +268,16 @@ def newItem():
                                categories=categories)
 
 
+@login_required
 @app.route('/catalog/<category_name>/<item_name>/Edit',
            methods=['GET', 'POST'])
 def editItem(category_name, item_name):
-    if 'username' not in login_session:
-        return redirect('/login')
+    """
+    editItem edits item if user is logged in
+    Args:
+        category_name: name of category
+        item_name: name of item in the category
+    """
     categories = session.query(Category).all()
     category = session.query(Category).filter_by(name=category_name).one()
     category_id = category.id
@@ -247,11 +300,16 @@ def editItem(category_name, item_name):
                                login_session=login_session)
 
 
+@login_required
 @app.route('/catalog/<category_name>/<item_name>/Delete',
            methods=['GET', 'POST'])
 def deleteItem(category_name, item_name):
-    if 'username' not in login_session:
-        return redirect('/login')
+    """
+    deleteItem deletes item if user is logged in
+    Args:
+        category_name: name of category
+        item_name: name of item in the category
+    """
     category = session.query(Category).filter_by(name=category_name).one()
     itemToDelete = session.query(Item).filter_by(name=item_name,
                                                  category_id=category.id).one()

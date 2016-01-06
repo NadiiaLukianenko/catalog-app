@@ -53,7 +53,7 @@ class Item(Base):
            'id': self.id,
            'name': self.name,
            'description': self.description,
-           'creationDateTime': self.creationDateTime,
+           'creationDateTime': str(self.creationDateTime),
            'category_id': self.category_id
         }
 
