@@ -87,6 +87,7 @@
         border-style: solid;
         border-color: darkgrey;
     }
+
     h3 {
         color: #001933;
     }
@@ -107,4 +108,17 @@
     }
     #item-link {
         text-decoration: none;
+    }
+    img {
+        max-width: 200px;
+        width: 30%;
+        alight: right;
+        vertical-align: text-top;
+    }
+    img[src="/catalog/image/"] {
+        display: none;
+    }
+    textarea {
+        rows: 10;
+        overflow: auto;
     }

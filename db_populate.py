@@ -34,10 +34,11 @@ def loadJson(source):
                                  creationDateTime=datetime.strptime(
                                      item["creationDateTime"],
                                      "%Y-%m-%d %H:%M:%S.%f"),
+                                 image=item["image"],
                                  category_id=item["category_id"]))
     session.commit()
 
 
 if __name__ == '__main__':
-    loadJson('static/initial_catalog.json')
+    loadJson('static/initialcatalog.json')
 

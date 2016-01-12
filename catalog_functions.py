@@ -5,7 +5,7 @@ catalog_functions.py: main functionality for Catalog App:
     - view/create/update/delete items
 """
 from flask import Flask, render_template, request, redirect, url_for, jsonify,\
-    flash
+    flash, Response
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item
@@ -20,11 +20,22 @@ import random
 import string
 from xml.etree.ElementTree import Element, SubElement, tostring, dump
 from flask.ext.responses import xml_response
+from werkzeug import secure_filename
+import os
+import datetime
+from flask import send_from_directory
+import pdb
 
+#pdb.set_trace()
+
+UPLOAD_FOLDER = 'image/'
+ALLOWED_EXTENSIONS = set(['png','jpg','jpeg','gif'])
 CLIENT_ID = json.loads(open('client_secrets.json',
                             'r').read())['web']['client_id']
 APPLICATION_NAME = "CatalogApp"
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
@@ -33,29 +44,63 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-@app.route('/catalog.XML')
-def returnXml():
-    categories = session.query(Category).all()
-    root = Element('catalog')
-    categories_xml = SubElement(root, 'categories')
-    for i in categories:
+@app.route('/catalog/image/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+
+
+def xmlCategories(categories_xml,i):
         category_xml = SubElement(categories_xml, 'category',
-                                  {'id': str(i.id),
-                                   'name': i.name,
-                                   'description': i.description,
+                                  {
+                                      'id': str(i.id),
+                                      'name': i.name,
+                                      'description': i.description,
                                    }
                                   )
-        items = session.query(Item).filter_by(category_id=i.id).all()
-        items_xml = SubElement(category_xml, 'items')
-        for j in items:
-            item_xml = SubElement(items_xml, 'item',
+        return category_xml
+
+
+def xmlItems(items_xml,j):
+    SubElement(items_xml, 'item',
                             {
                                 'id': str(j.id),
                                 'name': j.name,
                                 'description': j.description,
                                 'creationDateTime': str(j.creationDateTime)
                             })
-    return xml_response(tostring(root))
+
+
+@app.route('/catalog.XML')
+def returnXml():
+    categories = session.query(Category).all()
+    root = Element('catalog')
+    categories_xml = SubElement(root, 'categories')
+    for i in categories:
+        category_xml = xmlCategories(categories_xml,i)
+        items = session.query(Item).filter_by(category_id=i.id).all()
+        items_xml = SubElement(category_xml, 'items')
+        for j in items:
+            xmlItems(items_xml,j)
+
+    return xml_response(tostring(root, encoding="us-ascii", method="xml"),
+                headers={'Content-Type': 'application/xml; charset=utf-8;'})
+
+
+@app.route('/catalog/<category_name>.XML')
+def returnXmlCategory(category_name):
+    category = session.query(Category).filter_by(name=category_name).all()
+    root = Element('catalog')
+    for i in category:
+        category_xml = xmlCategories(root,i)
+        items = session.query(Item).filter_by(category_id=i.id).all()
+        items_xml = SubElement(category_xml, 'items')
+        for j in items:
+            xmlItems(items_xml,j)
+
+    return xml_response(tostring(root, encoding="us-ascii", method="xml"),
+                headers={'Content-Type': 'application/xml; charset=utf-8;'})
 
 
 def login_required(func):
@@ -247,6 +292,35 @@ def item(category_name, item_name):
     return render_template('item.html', category=category, item=item,
                            login_session=login_session)
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+def saveFile(file):
+    filename = secure_filename(file.filename)
+    filename = ''.join([filename.rsplit('.',1)[0],
+                    str(datetime.datetime.now().microsecond),'.',
+                    filename.rsplit('.',1)[1]])
+    os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return filename
+
+def deleteFile(file):
+    try:
+        if len(file) > 4:
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'],file))
+    except IOError as e:
+        print "I/O error({0}): {1}".format(e.errno, e.strerror)
+
+def updateFile(old_file, new_file):
+    '''
+    :param old_file: path
+    :param new_file: object
+    :return: new file name
+    '''
+    deleteFile(old_file)
+    return saveFile(new_file)
+
+
 @login_required
 @app.route('/catalog/New', methods=['GET', 'POST'])
 def newItem():
@@ -254,14 +328,19 @@ def newItem():
     newItem adds new item if user is logged in
     """
     if request.method == 'POST':
-        newItem = Item(name=request.form['item'], description=request.form[
-                    'description'], category_id=request.form['category'])
-        session.add(newItem)
-        session.commit()
-        category_name = session.query(Category).\
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = saveFile(file)
+            newItem = Item(name=request.form['item'], description=request.form[
+                    'description'], category_id=request.form['category'],
+                    image=filename, creationDateTime=datetime.datetime.now())
+            session.add(newItem)
+            session.commit()
+            category_name = session.query(Category).\
             filter_by(id=request.form['category']).one().name
-        return redirect(url_for('catalogSelected',
-                                category_name=category_name))
+
+            return redirect(url_for('catalogSelected',
+                            category_name=category_name, filename=filename))
     else:
         categories = session.query(Category).all()
         return render_template('add_item.html', login_session=login_session,
@@ -290,6 +369,9 @@ def editItem(category_name, item_name):
             editedItem.description = request.form['description']
         if request.form['category']:
             editedItem.category_id = request.form['category']
+        if request.files['file'] and allowed_file(request.files['file'].filename):
+            editedItem.image = updateFile(editedItem.image,
+                                          request.files['file'])
         session.add(editedItem)
         session.commit()
         return redirect(url_for('catalogSelected',
@@ -314,6 +396,7 @@ def deleteItem(category_name, item_name):
     itemToDelete = session.query(Item).filter_by(name=item_name,
                                                  category_id=category.id).one()
     if request.method == 'POST':
+        deleteFile(itemToDelete.image)
         session.delete(itemToDelete)
         session.commit()
         return redirect(url_for('catalog', category_name=category_name))

@@ -41,7 +41,7 @@ class Item(Base):
     name = Column(String(250), nullable=False)
     description = Column(String(800))
     creationDateTime = Column(DateTime)
-    picture = Column(String)
+    image = Column(String(250))
     category = relationship(Category)
     category_id = Column(Integer, ForeignKey('category.id'))
 
@@ -54,6 +54,7 @@ class Item(Base):
            'name': self.name,
            'description': self.description,
            'creationDateTime': str(self.creationDateTime),
+           'image': self.image,
            'category_id': self.category_id
         }
 

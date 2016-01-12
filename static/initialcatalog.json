@@ -1,0 +1,117 @@
+{
+  "Category": [
+    {
+      "Items": [
+        {
+          "description": "ToDo: JUnit, Selenium",
+          "category_id": 1,
+          "creationDateTime": "2016-01-03 13:54:56.917159",
+          "id": 1,
+          "name": "Automation testing",
+          "image": ""
+        },
+        {
+          "description": "ToDo: read Security Operations",
+          "category_id": 1,
+          "creationDateTime": "2016-01-03 13:54:56.917327",
+          "id": 2,
+          "name": "Finance",
+          "image": ""
+        },
+        {
+          "description": "ToDo: Mockito",
+          "category_id": 1,
+          "creationDateTime": "2016-01-03 13:59:56.917327",
+          "id": 9,
+          "name": "Mockito",
+          "image": ""
+        }
+      ],
+      "description": "Work goals",
+      "id": 1,
+      "name": "Work"
+    },
+    {
+      "Items": [
+        {
+          "description": "ToDo: prepare sequences for training",
+          "category_id": 2,
+          "creationDateTime": "2016-01-03 13:54:56.917398",
+          "id": 3,
+          "name": "Yoga",
+          "image": ""
+        },
+        {
+          "description": "ToDo: Trainings 2 times per week",
+          "category_id": 2,
+          "creationDateTime": "2016-01-03 13:54:56.917462",
+          "id": 4,
+          "name": "RockClimbing",
+          "image": ""
+        }
+      ],
+      "description": "Sports",
+      "id": 2,
+      "name": "Sport"
+    },
+    {
+      "Items": [
+        {
+          "description": "ToDo: Prepare albums.",
+          "category_id": 3,
+          "creationDateTime": "2016-01-03 13:54:56.917520",
+          "id": 5,
+          "name": "Photography",
+          "image": ""
+        }
+      ],
+      "description": "All hobbies",
+      "id": 3,
+      "name": "Hobbies"
+    },
+    {
+      "Items": [
+        {
+          "description": "ToDo: prepare and pass IELTS",
+          "category_id": 4,
+          "creationDateTime": "2016-01-03 13:54:56.917576",
+          "id": 6,
+          "name": "English",
+          "image": ""
+        },
+        {
+          "description": "ToDo: roll the course",
+          "category_id": 4,
+          "creationDateTime": "2016-01-03 13:54:56.917630",
+          "id": 7,
+          "name": "German",
+          "image": ""
+        }
+      ],
+      "description": "All languages to learn",
+      "id": 4,
+      "name": "Languages"
+    },
+    {
+      "Items": [
+        {
+          "description": "ToDo: complete course",
+          "category_id": 5,
+          "creationDateTime": "2016-01-03 13:54:56.917691",
+          "id": 8,
+          "name": "Udacity",
+          "image": ""
+        }
+      ],
+      "description": "All courses",
+      "id": 5,
+      "name": "Education"
+    },
+    {
+      "Items": [],
+      "description": "Finance goals",
+      "id": 6,
+      "name": "Finance"
+    }
+  ]
+}
