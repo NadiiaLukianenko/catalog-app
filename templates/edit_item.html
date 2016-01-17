@@ -57,8 +57,9 @@ function readURL(input) {
             </select>
             <br>
         </div>
-        <button type="submit" value="editItem" class="btn btn-default">Submit</button>
+        <button type="submit" value="edit_item" class="btn btn-default">Submit</button>
         <a href="{{url_for('catalog')}}">Cancel</a>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
     </form>
  </div>
  <div class="push"></div>

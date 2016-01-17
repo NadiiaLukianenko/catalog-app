@@ -112,8 +112,10 @@
     img {
         max-width: 200px;
         width: 30%;
-        alight: right;
+        align: left;
         vertical-align: text-top;
+        float: left;
+        margin: 7px 7px 7px 0;
     }
     img[src="/catalog/image/"] {
         display: none;

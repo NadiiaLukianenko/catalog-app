@@ -19,7 +19,7 @@
                 <h3>Categories</h3>
                 <div>
                 {% for i in categories %}
-                    <a href="{{url_for('catalogSelected',category_name=i.name)}}" id="category-link">{{ i.name }}</a><br>
+                    <a href="{{url_for('catalog_selected',category_name=i.name)}}" id="category-link">{{ i.name }}</a><br>
                 {% endfor %}
                 <br>
                 </div>
@@ -27,7 +27,7 @@
             <div class="col-sm-9 left top">
                 <br>
                 {% if 'username' in login_session %}
-                <a href="{{url_for('newItem')}}" id="links">Add Item</a>
+                <a href="{{url_for('new_item')}}" id="links">Add Item</a>
                 {% endif %}
                 <h3>{{category_name}} Items</h3>
                 <div id="links">

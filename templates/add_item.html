@@ -37,8 +37,9 @@
             </select>
             <br>
         </div>
-        <button type="submit" value="newItem" class="btn btn-default">Submit</button>
+        <button type="submit" value="new_item" class="btn btn-default">Submit</button>
         <a href = "{{url_for('catalog')}}">Cancel</a>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
     </form>
 </div>
 <div class="push"></div>
