@@ -466,5 +466,5 @@ if __name__ == '__main__':
     app.secret_key = 'bPpAwqouObw5aCWYAhgSRbVn'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.jinja_env.globals['csrf_token'] = generate_csrf_token
-    app.debug = True
+    app.debug = False
     app.run(host='0.0.0.0', port=8080)
