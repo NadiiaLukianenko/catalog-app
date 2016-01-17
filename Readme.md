@@ -20,12 +20,12 @@
 ```
 **API endpoints:**
 
-1. JSON:
+***JSON:***
 
 * */catalog.JSON* - Fetches and returns all data in json format
 * */catalog/\<category_name\>.JSON* - Fetches and returns items for *\<category_name\>*
 
-2. XML:
+***XML:***
 
 * */catalog.XML* - Fetches and returns all data in xml format
 * */catalog/\<category_name\>.XML* - Fetches and returns items for *\<category_name\>*
