@@ -27,7 +27,8 @@ or
 1. JSON:
 
 * */catalog.JSON* - Fetches and returns all data in json format
-* */catalog/\<category_name\>.JSON* - Fetches and returns items for *<category_name>*
+* */catalog/\<category_name\>.JSON* - Fetches and returns items for *\<category_name\>*
+
 
 2. XML:
 
