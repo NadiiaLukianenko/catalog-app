@@ -6,11 +6,7 @@
 
 **To work with DB and application:**
 
-1. Download Catalog.zip file and unzip it.
-
-or
-
-2. Fork the repository:
+1. Download Catalog.zip file and unzip it OR Fork the repository:
     https://github.com/NadiiaLukianenko/catalog-app.git
 
 **To create DB and populate data - run:**
