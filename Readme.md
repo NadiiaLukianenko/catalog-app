@@ -6,11 +6,7 @@
 
 **To work with DB and application:**
 
-1. Download Catalog.zip file and unzip it.
-
-or
-
-2. Fork the repository:
+1. Download Catalog.zip file and unzip it OR Fork the repository:
     https://github.com/NadiiaLukianenko/catalog-app.git
 
 **To create DB and populate data - run:**
@@ -24,13 +20,12 @@ or
 ```
 **API endpoints:**
 
-1. JSON:
+***JSON:***
 
 * */catalog.JSON* - Fetches and returns all data in json format
 * */catalog/\<category_name\>.JSON* - Fetches and returns items for *\<category_name\>*
 
-
-2. XML:
+***XML:***
 
 * */catalog.XML* - Fetches and returns all data in xml format
 * */catalog/\<category_name\>.XML* - Fetches and returns items for *\<category_name\>*
