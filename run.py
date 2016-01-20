@@ -364,9 +364,9 @@ def update_file(old_file, new_file):
     return save_file(new_file)
 
 
-@login_required
-@csrf.exempt
 @app.route('/catalog/New', methods=['GET', 'POST'])
+@csrf.exempt
+@login_required
 def new_item():
     """
     new_item adds new item if user is logged in
@@ -390,10 +390,10 @@ def new_item():
                                categories=categories)
 
 
-@login_required
-@csrf.exempt
 @app.route('/catalog/<category_name>/<item_name>/Edit',
            methods=['GET', 'POST'])
+@csrf.exempt
+@login_required
 def edit_item(category_name, item_name):
     """
     edit_item edits item if user is logged in
@@ -427,9 +427,9 @@ def edit_item(category_name, item_name):
                                login_session=login_session)
 
 
-@login_required
 @app.route('/catalog/<category_name>/<item_name>/Delete',
            methods=['GET', 'POST'])
+@login_required
 def delete_item(category_name, item_name):
     """
     delete_item deletes item if user is logged in
