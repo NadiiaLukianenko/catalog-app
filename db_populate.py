@@ -4,11 +4,11 @@ db_populate.py:
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from run import Base, Category, Item
+from __init__ import Base, Category, Item
 from datetime import datetime
 import json
 
-engine = create_engine('sqlite:///catalog.db')
+engine = create_engine('postgresql://catalog:catalog@localhost/catalogdb')
 
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)

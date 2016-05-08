@@ -2,7 +2,7 @@
 **Prerequisites:**
 
 1. Installed *Python v2.7.x*
-2. Installed *sqlite v3*
+2. Installed *PostgreSQL 9.3.12*
 
 **To work with DB and application:**
 
@@ -16,7 +16,7 @@
 ```
 **To run application:**
 ```sh
->>> python run.py
+>>> python __init__.py
 ```
 **API endpoints:**
 
@@ -32,7 +32,7 @@
 
 **What are included:**
 ```
-catalog/
+catalogApp/
 /- image
 /- static
     |- style.css
@@ -46,7 +46,7 @@ catalog/
     |- header.html
     |- item.html
     |- login.html
-|- run.py
+|- __init.py
 |- database_setup.py
 |- db_populate.py
 |- client_secrets.json
