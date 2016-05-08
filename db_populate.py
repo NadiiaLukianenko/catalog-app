@@ -4,7 +4,7 @@ db_populate.py:
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from __init__ import Base, Category, Item
+from __init__1 import Base, Category, Item
 from datetime import datetime
 import json
 

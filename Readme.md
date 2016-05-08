@@ -46,7 +46,7 @@ catalogApp/
     |- header.html
     |- item.html
     |- login.html
-|- __init.py
+|- __init__.py
 |- database_setup.py
 |- db_populate.py
 |- client_secrets.json
